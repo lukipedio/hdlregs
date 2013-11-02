@@ -1,0 +1,85 @@
+{
+  "name"        : "adc_interface",
+  "description" : "ADC interface",
+  "width"       : 32,
+  "registers":
+    [
+		{
+		  "name"          : "adc_control",
+		  "description"   : "ADC global control register",
+		  "access"        : "read-write",
+		  "reset"         : "0xFFFFFFFF",
+		  "fields"        :
+			  [
+				{
+					"name"        : "reset",
+					"description" : "reset the ADC interface",
+					"bitOffset"   : 0,
+					"bitWidth"    : 1,
+					"reset"       : 0
+				}							
+			  ]		  
+		},
+		
+		{
+		  "name"          : "adc1_control",
+		  "description"   : "ADC1 control register",
+		  "fields"        :
+			  [
+				{
+					"name"        : "bit_clock_align",
+					"description" : "start the bit-clock alignment procedure",
+					"bitWidth"    : 1,
+					"reset"       : 0,					
+					"access"      : "read-write"					
+				},
+				{
+					"name"        : "word_align",
+					"description" : "enable word-synchronization on channels 7..0",
+					"bitWidth"    : 8,
+					"reset"       : 1,					
+					"access"      : "read-write"					
+				}
+			  ]		  
+		},
+		
+		{
+		  "name"          : "adc1_status",
+		  "description"   : "ADC1 status register",
+		  "access"        : "read-only",
+		  "fields"        :
+			  [
+				{
+					"name"        : "clock_ok",
+					"description" : "clock input is toggling",
+					"bitWidth"    : 1,
+					"reset"       : 0
+				},							  
+				{
+					"name"        : "bit_clock_align_done",
+					"description" : "bit-clock alignment procedure is completed",
+					"bitWidth"    : 1,
+					"reset"       : 0
+				},							  
+				{
+					"name"        : "bit_clock_delay",
+					"description" : "bit-clock IDELAY setting",
+					"bitWidth"    : 6,
+					"access"      : "read-only"
+				},								
+				{
+					"name"        : "word_align_done",
+					"description" : "word-synchronization completed on channels 7..0",
+					"bitWidth"    : 8,
+					"reset"       : 0
+				},
+				{
+					"name"        : "ramp_ok",
+					"description" : "ramp pattern detected on channels 7..0",
+					"bitWidth"    : 8,
+					"reset"       : 0
+				}
+			  ]		  
+		}			
+  	]
+}
