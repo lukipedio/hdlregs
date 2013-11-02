@@ -46,7 +46,7 @@ Usage
 
 To generate the output files from the JSON specification, execute the hdlregs.py script with the path to the JSON register specification as an argument. e.g.:
     
-    python hdlregs.py adc_interface.json
+    python hdlregs.py example/example.json
 
 Compatibility
 =============
