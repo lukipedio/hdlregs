@@ -75,7 +75,7 @@ Here is an example register specification showcasing a few capabilities of HDLRe
         ]
     }    
 
-You can have a look at the generated files in the [example/output][https://github.com/noasic/hdlregs/tree/master/example/output] directory.
+You can have a look at the generated files in the [example/output](https://github.com/noasic/hdlregs/tree/master/example/output) directory.
 
 Usage
 =====
