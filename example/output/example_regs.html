@@ -1,0 +1,267 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Registers in 'example' module</title>
+    <style type="text/css" media="screen,print">
+
+    body, html{
+        margin:0;
+        padding:0;    
+        font-family:Verdana,Geneva,Arial,sans-serif;        
+        font-size: small;
+    }
+
+    h1 {
+        margin:0;
+    }
+
+    /* registers table */
+    table.register { 
+        border: thin solid #aaa; 
+        border-collapse: collapse;
+        border-spacing:0;
+        }    
+    table.register tr.Header{
+        background-color: #edf0f9;
+        height: 2em;
+        font-size: 125%;
+        }
+    table.register td.RegisterAddr {
+        width: 10em; 
+        text-align: left; 
+        font-weight: bold; 
+        padding: 5px;
+        }
+    table.register td.RegisterName {
+        font-weight: bold; 
+        padding: 5px;  
+        }
+    table.register td.RegisterDescription {
+        border-bottom: thin solid #aaa; 
+        padding: 5px; 
+        padding-top: 0; 
+        background-color: #edf0f9;
+        }
+    table.register td.BitFieldIndex {
+        padding-right: 1em; 
+        padding-top: 3px; 
+        width: 5em; text-align: right; 
+        vertical-align: top; 
+        border-top: thin solid #aaa; 
+        }
+    table.register td.BitFieldName {
+        width: 25em; 
+        text-align: left; 
+        border-top: thin solid #aaa; 
+        font-weight: bold; 
+        }
+    table.register td.BitFieldMode {
+        width: 3em; 
+        text-align: left; 
+        border-top: thin solid #aaa; 
+        }
+    table.register td.BitFieldReset {
+        text-align: left;
+        vertical-align: top; 
+        border-top: thin solid #aaa; 
+        }  
+        
+    /* overview table format */
+    table#overview{
+        width: 200px;
+        border: none;
+    }    
+    table#overview tr {
+        height: 1.5em;
+    }        
+    table#overview td {
+        padding-left: 1em;
+    }        
+    .even{
+        background-color: #eee;
+    }
+    a.overview {
+        color: black;
+        text-decoration: none;
+    }    
+        
+    #footer p {
+        margin:0;
+    }
+    
+    #sidebar ul {
+        margin:0;
+        padding:0;
+        list-style:none;
+    }    
+    
+    div#wrap {
+        width:750px;
+        margin:1em auto;
+        border: solid 2px #aaa;
+        padding: 5px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        -o-border-radius: 10px;
+        -ms-border-radius: 10px;
+        -khtml-border-radius: 10px;
+        border-radius: 3px;        
+        
+    }    
+    
+    div#header {
+        padding:10px 10px;
+        /*border-width: 0 0 0.1em 0;*/
+        /*border-style: double;*/
+        border-color: #aaa;        
+    }        
+    
+    div#footer {
+        clear:both; /*push footer down*/
+        padding:5px 10px;
+        text-align:center;
+        border-width: 0.1em 0 0 0;
+        border-style: double;
+        border-color: #aaa;        
+        font-size: x-small;
+        
+    }        
+
+    div#sidebar {
+        width:200px; /* subtract padding from actual width*/
+        float:left;
+        padding:10px;        
+    }    
+    
+    div#main {
+        width: 510px; /* subtract padding from actual width*/
+        float:right;
+        padding:10px;
+    }        
+    
+    </style>
+    
+</head>
+<body>
+
+    <div id="wrap">
+
+        <div id="header">
+            <h1>Registers in 'example' module</h1>
+        </div>
+
+        <div id="sidebar">
+            <h2>Overview</h2>
+                <table id="overview">
+                    <tr><td class="even"><a class="overview" href="#version">version</d></td></tr>
+                    <tr><td class="odd"><a class="overview" href="#control">control</d></td></tr>
+                </table>
+
+        </div>
+        
+        <div id="main">
+            <h2>Detailed description</h2>
+                
+  <p>
+  <a id="version"></a>
+  <table class="register">
+    <tr class="Header">
+      <td class="RegisterName" colspan="3">version</td>    
+      <td class="RegisterAddr">0x00000000</td>          
+    </tr>
+    <tr>
+      <td class="RegisterDescription" colspan="4">Version register implemented using read-only fields</td>          
+    </tr>
+    
+    <tr class="BitField">
+      <td class="BitFieldIndex" rowspan="2">[15:8]</td>
+      <td class="BitFieldName">low</td>
+      <td class="BitFieldMode">R</td>
+      <td class="BitFieldReset">Reset: 0</td>            
+    </tr>
+    <tr>
+      <td class="BitFieldDescription">low-byte of the version number</td>
+      <td>&nbsp;</td>
+      <td class="BitFieldExtReset">
+      </td>
+    </tr>  
+
+    <tr class="BitField">
+      <td class="BitFieldIndex" rowspan="2">[7:0]</td>
+      <td class="BitFieldName">high</td>
+      <td class="BitFieldMode">R</td>
+      <td class="BitFieldReset">Reset: 1</td>            
+    </tr>
+    <tr>
+      <td class="BitFieldDescription">high-byte of the version number</td>
+      <td>&nbsp;</td>
+      <td class="BitFieldExtReset">
+      </td>
+    </tr>  
+   
+  </table>
+  </p>    
+  <p>
+  <a id="control"></a>
+  <table class="register">
+    <tr class="Header">
+      <td class="RegisterName" colspan="3">control</td>    
+      <td class="RegisterAddr">0x00000100</td>          
+    </tr>
+    <tr>
+      <td class="RegisterDescription" colspan="4">Control register with a mix of read/write, write-only and read-only fields</td>          
+    </tr>
+    
+    <tr class="BitField">
+      <td class="BitFieldIndex" rowspan="2">[31]</td>
+      <td class="BitFieldName">reset</td>
+      <td class="BitFieldMode">RW</td>
+      <td class="BitFieldReset">Reset: 1</td>            
+    </tr>
+    <tr>
+      <td class="BitFieldDescription">reset the module</td>
+      <td>&nbsp;</td>
+      <td class="BitFieldExtReset">
+      </td>
+    </tr>  
+
+    <tr class="BitField">
+      <td class="BitFieldIndex" rowspan="2">[1]</td>
+      <td class="BitFieldName">done</td>
+      <td class="BitFieldMode">R</td>
+      <td class="BitFieldReset">Reset: 0</td>            
+    </tr>
+    <tr>
+      <td class="BitFieldDescription">signals that the processing has completed</td>
+      <td>&nbsp;</td>
+      <td class="BitFieldExtReset">
+      </td>
+    </tr>  
+
+    <tr class="BitField">
+      <td class="BitFieldIndex" rowspan="2">[0]</td>
+      <td class="BitFieldName">start</td>
+      <td class="BitFieldMode">W</td>
+      <td class="BitFieldReset">Reset: 0</td>            
+    </tr>
+    <tr>
+      <td class="BitFieldDescription">start the module</td>
+      <td>&nbsp;</td>
+      <td class="BitFieldExtReset">
+      </td>
+    </tr>  
+   
+  </table>
+  </p>           
+        </div>
+        
+        <div id="footer">
+        <p>Generated: 2013-11-10 21:00 by <a href="https://github.com/noasic/hdlregs">HDLRegs</a> version 0.1</p>
+        </div>
+    </div>
+
+</body>
+</html>
