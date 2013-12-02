@@ -37,7 +37,7 @@ from string import Template
 # Constants
 #
 
-HDLREGS_VERSION = "0.1"
+HDLREGS_VERSION = "0.2"
 
 INDENTATION_WIDTH = 4
 
@@ -352,7 +352,11 @@ class VhdlRecord:
     #
     def name(self):
         return self.name
-
+    #
+    # Returns the number elements within the record
+    def num_elements(self):
+        return len(self.elements_)
+    
 class VhdlPackage:
     #
     def __init__(self, name):
@@ -657,6 +661,11 @@ class VhdlPackageGenerator(CodeGenerator):
                 if record.name.endswith('regs2user'):
                     regs2user.add_element(r.name + ": " + record.name)
                 vhdl_package.add_declaration(record)
+        # Add dummy signals in case of empty records, as these are not allowed in VHDL
+        if 0 == user2regs.num_elements():
+            user2regs.add_element("dummy : std_logic")
+        if 0 == regs2user.num_elements():
+            regs2user.add_element("dummy : std_logic")
         #
         vhdl_package.add_declaration(user2regs)        
         vhdl_package.add_declaration(regs2user)
