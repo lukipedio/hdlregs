@@ -37,7 +37,7 @@ from string import Template
 # Constants
 #
 
-HDLREGS_VERSION = "0.2"
+HDLREGS_VERSION = "0.3"
 
 INDENTATION_WIDTH = 4
 
@@ -1233,6 +1233,20 @@ if __name__ == "__main__":
     try:
         register_definition_file = sys.argv[1]
         
+        # Check for non-ascii characters in JSON file, as these are not supported yet
+        num_ascii_errors = 0
+        with open(register_definition_file, 'r') as f:
+            line_number = 1
+            for line in f:
+                for char in line:
+                    if ord(char) > 127:
+                        print "Error in line %d: detected non-ascii character '%c'" % (line_number, char)
+                        num_ascii_errors += 1
+                line_number += 1
+        if num_ascii_errors > 0:
+            sys.exit(-1)
+        
+        # Load JSON file
         json_data = json.load(open(register_definition_file, 'r'))
         module = Module(json_data)
            
