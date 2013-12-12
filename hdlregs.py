@@ -37,7 +37,7 @@ from string import Template
 # Constants
 #
 
-HDLREGS_VERSION = "0.3"
+HDLREGS_VERSION = "0.4"
 
 INDENTATION_WIDTH = 4
 
@@ -638,6 +638,14 @@ class VhdlPackageGenerator(CodeGenerator):
         # Register address offsets
         for r in module.registers:
             vhdl_package.add_declaration(VhdlDeclaration('constant %s : std_logic_vector(31 downto 0) := x"%.8X";\n' % (self.address_identifier(r), r.addressOffset)))
+        # Lowest address in register file 
+        identifier = module.name.upper() + "_REGS_BASEADDR"
+        base_register_identifier = self.address_identifier(module.base_register())
+        vhdl_package.add_declaration(VhdlDeclaration('constant %s : std_logic_vector(31 downto 0) := %s; -- lowest register address\n' % (identifier, base_register_identifier)))        
+        # Highest address in register file
+        identifier = module.name.upper() + "_REGS_HIGHADDR"
+        high_register_identifier = self.address_identifier(module.high_register())
+        vhdl_package.add_declaration(VhdlDeclaration('constant %s : std_logic_vector(31 downto 0) := %s; -- highest register address\n' % (identifier, high_register_identifier)))
         # Field constants:
         for r in module.registers:
             for f in r.fields:
@@ -892,6 +900,22 @@ class Module():
                 # print "elaboration: allocated address 0x%.8X for register %s" % (candidate_addressOffset, r1.name)
                 r1.addressOffset = candidate_addressOffset
             r1.elaborate()
+    # 
+    # Returns the module's register with the lowest address
+    def base_register(self):
+        base_addr_reg = self.registers[0]
+        for r in self.registers[1:]:
+            if r.addressOffset < base_addr_reg.addressOffset:
+                base_addr_reg = r            
+        return base_addr_reg
+    # 
+    # Returns the module's register with the highest address
+    def high_register(self):
+        base_addr_reg = self.registers[0]
+        for r in self.registers[1:]:
+            if r.addressOffset > base_addr_reg.addressOffset:
+                base_addr_reg = r            
+        return base_addr_reg
 
 # A register definition 
 class Register:
