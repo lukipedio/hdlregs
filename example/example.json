@@ -51,7 +51,8 @@
                         "description" : "start the module",
                         "bitWidth"    : 1,
                         "access"      : "write-only",
-                        "bitOffset"   : 0
+                        "bitOffset"   : 0,
+                        "selfClear"   : true						
                     }                  
                   ]          
             }

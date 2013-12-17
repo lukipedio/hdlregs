@@ -1,6 +1,11 @@
 HDLRegs Versions
 ================
 
+Version 0.5 (17-DEC-2013)
+-------------------------
+
+  * Added self-clearing fields (using the "selfClear" property)
+
 Version 0.4 (12-DEC-2013)
 -------------------------
 

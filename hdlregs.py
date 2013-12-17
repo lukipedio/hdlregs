@@ -37,7 +37,7 @@ from string import Template
 # Constants
 #
 
-HDLREGS_VERSION = "0.4"
+HDLREGS_VERSION = "0.5"
 
 INDENTATION_WIDTH = 4
 
@@ -251,8 +251,7 @@ HTML_REGISTER_FIELD_TEMPLATE = Template("""
     <tr>
       <td class="BitFieldDescription">$field_description</td>
       <td>&nbsp;</td>
-      <td class="BitFieldExtReset">
-      </td>
+      <td class="BitFieldSelfClear">$field_selfClear</td>
     </tr>  
 """)  # html_register_field_template
 
@@ -559,6 +558,16 @@ class VhdlComponentGenerator(CodeGenerator):
         for r in module.registers:
             if r.is_bus_writable():
                 register_write_proc.statements.append(VhdlStatement("%s <= '0';\n" % self.vhdl_strobe_signal(r)))
+        # self-clearing fields
+        register_write_proc.statements.append(VhdlStatement("-- self-clearing fields:\n"))
+        for r in module.registers:
+            if r.is_bus_writable():
+                reg_data_signal = self.vhdl_data_signal(r)
+                for f in r.fields:
+                    if f.selfClear:
+                        index_high = "%s + %s - 1" % (self.bitOffset_identifier(f), self.bitWidth_identifier(f))
+                        index_low = self.bitOffset_identifier(f)
+                        register_write_proc.statements.append(VhdlStatement("%s(%s downto %s) <= (others => '0');\n" % (reg_data_signal, index_high, index_low)))
         # bus-write
         register_write_proc.statements.append(VhdlStatement("-- bus write:\n"))
         bus_write_block = VhdlIfStatement("cs = '1' and rnw = '0'")
@@ -799,6 +808,7 @@ class HtmlGenerator():
                 field_range = element.bitOffset
             else:
                 field_range = "%d:%d" % (element.bitOffset + element.bitWidth - 1, element.bitOffset)
+            #
             access = element.access()
             if access == "read-write":
                 field_access = "RW"
@@ -806,11 +816,18 @@ class HtmlGenerator():
                 field_access = "R"
             elif access == "write-only":
                 field_access = "W"
+            #
+            if element.selfClear:
+                field_selfClear = "Self-clearing"
+            else:
+                field_selfClear = "&nbsp;"
+            #
             d = dict(field_range=field_range,
                      field_name=element.name,
                      field_access=field_access,
                      field_reset=element.reset(),
-                     field_description=element.description)
+                     field_description=element.description,
+                     field_selfClear=field_selfClear)
             return HTML_REGISTER_FIELD_TEMPLATE.substitute(d)            
         
     def save(self, filename):
@@ -1075,7 +1092,7 @@ class Register:
 # A register field        
 class Field:
     MANDATORY_ELEMENTS = ("name", "description", "bitWidth")
-    OPTIONAL_ELEMENTS = ("bitOffset", "reset", "access")
+    OPTIONAL_ELEMENTS = ("bitOffset", "reset", "access", "selfClear")
     #
     # Field constructor    
     def __init__(self, json_field, parent_reg):
@@ -1088,6 +1105,7 @@ class Field:
         self.bitOffset = None
         self._reset = None
         self._access = None
+        self.selfClear = None
         #
         # initialize fields from JSON    
         for key in json_field.keys():
@@ -1103,6 +1121,8 @@ class Field:
                 self._reset = int_from_json(json_field[key])
             elif key == "access":
                 self._access = json_field[key]
+            elif key == "selfClear":
+                self.selfClear = json_field[key]
             else:
                 raise FieldError(self, "unsupported element '%s'" % key)                 
         #

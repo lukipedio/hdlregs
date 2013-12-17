@@ -65,10 +65,11 @@ Here is an example register specification showcasing a few capabilities of HDLRe
                     },                                      
                     {
                         "name"        : "start",
-                        "description" : "start the module",
+                        "description" : "start the processing",
                         "bitWidth"    : 1,
                         "access"      : "write-only",
-                        "bitOffset"   : 0
+                        "bitOffset"   : 0,
+                        "selfClear"   : true
                     }                  
                   ]          
             }
